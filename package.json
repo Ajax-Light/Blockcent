@@ -1,0 +1,21 @@
+{
+    "name": "blockcent-rest-api",
+    "description": "Blockcent REST API for frontend",
+    "version": "1.0.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kaash-bot/Capstone-101/tree/api"
+    },
+    "author": {"name": "Ujwal Kundur"},
+    "scripts": {
+        "start": "node ./src/app.js",
+        "dev": "nodemon ./src/app.js"
+    },
+    "dependencies": {
+        "express": "^4.18.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.19",
+        "mocha": "^10.0.0"
+    }
+}
