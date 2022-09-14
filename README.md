@@ -8,10 +8,14 @@
     docker compose up -d
     ```
 
+    ``` shell
+    docker compose down --rmi local
+    ```
+
     **Don't forget** to execute `docker compose down` after you're done with the
-    service. The container is restarted the next time the services are brought
-    up and any code changes won't be reflected until the image is rebuilt with
-    `docker compose up -d` or `docker compose build`
+    service. The container is restarted with the previous image the next time the
+    services are brought up and any code changes won't be reflected until the image
+    is rebuilt with `docker compose up -d` or `docker compose build`
 
 2. Local Install:
 
