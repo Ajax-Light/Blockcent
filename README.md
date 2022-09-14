@@ -2,9 +2,23 @@
 
 ## Build & Run
 
-``` shell
-docker compose up -d
-```
+1. Using Docker and docker-compose:
+
+    ``` shell
+    docker compose up -d
+    ```
+
+    **Don't forget** to execute `docker compose down` after you're done with the
+    service. The container is restarted the next time the services are brought
+    up and any code changes won't be reflected until the image is rebuilt with
+    `docker compose up -d` or `docker compose build`
+
+2. Local Install:
+
+    ``` shell
+    npm install
+    npm start
+    ```
 
 ## Tech Stack
 
@@ -31,5 +45,10 @@ handled by the API. E.g.: User, Product, etc.
 Each component has a dedicated route and controller which are used by the top-level
 `routes.js` file. This enables flexibility in the implementation.
 
-Data Flow: `app.js` -> `server.js` -> `routes.js`
-                                        |--------> \<component\>/(`route.js` -> `controller.js`)
+Data Flow:
+>  
+> ```app.js -> server.js -> routes.js```
+>  
+> ```routes.js -> <component>/(route.js -> controller.js)```
+>  
+> ```controller.js -> <service>/```
