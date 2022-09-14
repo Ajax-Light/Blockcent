@@ -1,5 +1,5 @@
 ARG NODE_VER=16
-FROM node:${NODE_VER}
+FROM node:${NODE_VER}-alpine
 
 USER node
 WORKDIR /home/node/app
