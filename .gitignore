@@ -1,0 +1,9 @@
+# Node Binaries
+node_modules/
+
+# NPM locks
+package-lock.json
+
+# Editor files
+.vscode/
+*.swp
