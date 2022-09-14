@@ -1,8 +1,8 @@
 ARG NODE_VER=16
 FROM node:${NODE_VER}-alpine
 
-USER node
-WORKDIR /home/node/app
+RUN mkdir -p /home/root/app
+WORKDIR /home/root/app
 
 EXPOSE 8090
 
