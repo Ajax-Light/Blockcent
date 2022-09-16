@@ -1,6 +1,6 @@
 # Blockcent
 
-![Blockcent](docs/images/blockcent-logo.png)
+<img src="docs/images/blockcent-logo.png" width="300px" height="300px" />
 
 Blockcent is an incentive programme for students to enable better enagement in
 academic activities and have fun along the way!
