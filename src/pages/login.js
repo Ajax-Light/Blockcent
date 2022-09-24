@@ -37,7 +37,7 @@ const Login = () => {
   return (
     <>
       <Head>
-        <title>Login | Blockcent</title>
+        <title>Login/Register | Blockcent</title>
       </Head>
       <Box
         component="main"
@@ -66,14 +66,14 @@ const Login = () => {
                 color="textPrimary"
                 variant="h4"
               >
-                Sign in
+                Sign in/up
               </Typography>
               <Typography
                 color="textSecondary"
                 gutterBottom
                 variant="body2"
               >
-                Sign in on the internal platform
+                Sign in/up on the internal platform
               </Typography>
             </Box>
             <Grid
@@ -93,7 +93,7 @@ const Login = () => {
                   size="large"
                   variant="contained"
                 >
-                  Login with Facebook
+                  Facebook
                 </Button>
               </Grid>
               <Grid
@@ -109,7 +109,7 @@ const Login = () => {
                   size="large"
                   variant="contained"
                 >
-                  Login with Google
+                  Google
                 </Button>
               </Grid>
             </Grid>
@@ -165,27 +165,6 @@ const Login = () => {
                 Sign In Now
               </Button>
             </Box>
-            <Typography
-              color="textSecondary"
-              variant="body2"
-            >
-              Don&apos;t have an account?
-              {' '}
-              <NextLink
-                href="/register"
-              >
-                <Link
-                  to="/register"
-                  variant="subtitle2"
-                  underline="hover"
-                  sx={{
-                    cursor: 'pointer'
-                  }}
-                >
-                  Sign Up
-                </Link>
-              </NextLink>
-            </Typography>
           </form>
         </Container>
       </Box>
