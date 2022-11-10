@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/kaash-bot/Capstone-101/tree/api"
+        "url": "https://github.com/Ajax-Light/Blockcent/tree/api"
     },
     "author": {"name": "Ujwal Kundur"},
     "scripts": {
