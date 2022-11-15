@@ -160,14 +160,28 @@ class AssetTransfer extends Contract {
     }
 
     // TransferAsset updates the owner field of asset with given id in the world state.
-    async TransferAsset(ctx, id, newOwner) {
-        const assetString = await this.ReadAsset(ctx, id);
-        const asset = JSON.parse(assetString);
-        const oldOwner = asset.Owner;
-        asset.Owner = newOwner;
+    async TransferAsset(ctx, id_from, id_to, points) {
+        const existsFrom = await this.AssetExists(ctx, id_from);
+        if (!existsFrom) {
+            throw new Error(`The asset ${id_from} does not exist`);
+        }
+        const existsTo = await this.AssetExists(ctx, id_to);
+        if (!existsTo) {
+            throw new Error(`The asset ${id_to} does not exist`);
+        }
+        const fromString = await this.ReadAsset(ctx, id_from);
+        const toString = await this.ReadAsset(ctx, id_to);
+        const from = JSON.parse(fromString);
+        const to = JSON.parse(toString);
+        if (parseInt(from.Points) - parseInt(points) < 0) {
+            throw new Error(`Insufficient points to transfer ${points} from ${id_from} to ${id_to}`);
+        }
+        to.Points = parseInt(to.Points) + parseInt(points);
+        from.Points = parseInt(from.Points) - parseInt(points);
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(asset))));
-        return oldOwner;
+        await ctx.stub.putState(id_from, Buffer.from(stringify(sortKeysRecursive(from))));
+        await ctx.stub.putState(id_to, Buffer.from(stringify(sortKeysRecursive(to))));
+        return from;
     }
 
     // GetAllAssets returns all assets found in the world state.
