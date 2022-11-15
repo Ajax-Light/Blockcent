@@ -1,9 +1,3 @@
-/*
- * Copyright IBM Corp. All Rights Reserved.
- *
- * SPDX-License-Identifier: Apache-2.0
- */
-
 'use strict';
 
 // Deterministic JSON.stringify()
@@ -16,47 +10,81 @@ class AssetTransfer extends Contract {
     async InitLedger(ctx) {
         const assets = [
             {
-                ID: 'asset1',
-                Color: 'blue',
-                Size: 5,
-                Owner: 'Tomoko',
-                AppraisedValue: 300,
+                ID: 'PES2UG19CS197',
+                Type: 'Student',
+                Name: 'Ujwal Kundur',
+                Owns: {
+                    sandwich: 2,
+                    tea: 1,
+                    amazon: 0,
+                    flipkart: 0,
+                    recommendLetter: 0,
+                    internship: 0
+                },
+                Points: 300,
             },
             {
-                ID: 'asset2',
-                Color: 'red',
-                Size: 5,
-                Owner: 'Brad',
-                AppraisedValue: 400,
+                ID: 'PES2UG19CS191',
+                Type: 'Student',
+                Name: 'Aashutosh Konge',
+                Owns: {
+                    sandwich: 1,
+                    tea: 0,
+                    amazon: 0,
+                    flipkart: 1,
+                    recommendLetter: 0,
+                    internship: 0
+                },
+                Points: 200,
             },
             {
-                ID: 'asset3',
-                Color: 'green',
-                Size: 10,
-                Owner: 'Jin Soo',
-                AppraisedValue: 500,
+                ID: 'PES2UG19CS076',
+                Type: 'Student',
+                Name: 'Atharv Gupta',
+                Owns: {
+                    sandwich: 0,
+                    tea: 2,
+                    amazon: 1,
+                    flipkart: 0,
+                    recommendLetter: 0,
+                    internship: 0
+                },
+                Points: 100,
             },
             {
-                ID: 'asset4',
-                Color: 'yellow',
-                Size: 10,
-                Owner: 'Max',
-                AppraisedValue: 600,
+                ID: 'PES2UG19CS363',
+                Type: 'Student',
+                Name: 'Sanjana S',
+                Owns: {
+                    sandwich: 5,
+                    tea: 10,
+                    amazon: 0,
+                    flipkart: 0,
+                    recommendLetter: 0,
+                    internship: 1
+                },
+                Points: 50,
             },
             {
-                ID: 'asset5',
-                Color: 'black',
-                Size: 15,
-                Owner: 'Adriana',
-                AppraisedValue: 700,
+                ID: 'PES2UG19CS100',
+                Type: 'Student',
+                Name: 'Rahul',
+                Owns: {
+                    sandwich: 1,
+                    tea: 1,
+                    amazon: 1,
+                    flipkart: 1,
+                    recommendLetter: 1,
+                    internship: 1
+                },
+                Points: 10,
             },
             {
-                ID: 'asset6',
-                Color: 'white',
-                Size: 15,
-                Owner: 'Michel',
-                AppraisedValue: 800,
-            },
+                ID: 'Cafe1',
+                Type: 'Vendor',
+                Name: 'PESU Canteen',
+                Points: 400,
+            }
         ];
 
         for (const asset of assets) {
@@ -98,7 +126,7 @@ class AssetTransfer extends Contract {
     }
 
     // UpdateAsset updates an existing asset in the world state with provided parameters.
-    async UpdateAsset(ctx, id, color, size, owner, appraisedValue) {
+    async UpdateAsset(ctx, id, name, owns, ) {
         const exists = await this.AssetExists(ctx, id);
         if (!exists) {
             throw new Error(`The asset ${id} does not exist`);
