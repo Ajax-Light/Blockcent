@@ -10,6 +10,7 @@ const port = 8090
 
 function init_component_routes(){
     app.use('/api/users', routes.user)
+    app.use('/api/products', routes.product)
 }
 
 function start(){
