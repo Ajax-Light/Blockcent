@@ -7,8 +7,9 @@ const user_ctrl = require('./controller')
 const express = require('express')
 const router = express.Router()
 
-router.get("/", (req, res) => {
+router.get("/users/:userid", (req, res) => {
     res.json(user_ctrl.view())
+    // res.send(req.params.userid)'s info ??
 });
 
 module.exports = router 

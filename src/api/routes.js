@@ -4,4 +4,6 @@
 
 const user = require('./components/User/routes.js')
 
-module.exports = { user }
+const product = require('./components/Product/routes.js')
+
+module.exports = { user, product }
