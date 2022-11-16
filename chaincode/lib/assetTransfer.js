@@ -80,7 +80,7 @@ class AssetTransfer extends Contract {
                 Points: 10,
             },
             {
-                ID: 'Cafe1',
+                ID: 'Canteen1',
                 Type: 'Vendor',
                 Name: 'PESU Canteen',
                 Points: 400,
