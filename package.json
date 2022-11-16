@@ -1,15 +1,20 @@
 {
-  "name": "material-kit-react",
-  "author": "Devias IO",
+  "name": "blockcent",
+  "author": "Ujwal Kundur",
   "licence": "MIT",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "private": false,
   "scripts": {
+    "start": "node src/app.js",
     "dev": "next",
-    "build": "next build",
-    "start": "next start",
+    "build-frontend": "next build",
+    "start-frontend": "next start",
+    "build-backend": "tsc",
+    "build-backend:watch": "tsc -w",
+    "prepare-backend": "npm run build",
+    "pretest-backend": "npm run lint",
     "export": "next export",
-    "lint": "next lint",
+    "lint": "next lint; eslint . --ext .ts",
     "lint-fix": "next lint --fix"
   },
   "dependencies": {
@@ -21,6 +26,8 @@
     "@mui/material": "^5.0.6",
     "@mui/styles": "^5.0.2",
     "@mui/x-date-pickers": "^5.0.1",
+    "@grpc/grpc-js": "~1.7.2",
+    "@hyperledger/fabric-gateway": "^1.1.1",
     "body-parser": "^1.20.0",
     "chart.js": "^3.5.1",
     "date-fns": "^2.25.0",
@@ -38,9 +45,14 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@tsconfig/node14": "^1.0.3",
+    "@types/node": "^14.18.16",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
     "eslint": "^7.32.0",
     "eslint-config-next": "12.0.3-canary.7",
     "nodemon": "^2.0.19",
-    "mocha": "^10.0.0"
+    "mocha": "^10.0.0",
+    "typescript": "~4.6.4"
   }
 }
