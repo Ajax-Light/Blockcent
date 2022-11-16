@@ -34,7 +34,7 @@ const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
 const peerHostAlias = envOrDefault('PEER_HOST_ALIAS', 'peer0.org1.example.com');
 
 const utf8Decoder = new TextDecoder();
-const assetId = `asset${Date.now()}`;
+const assetId = `PES2UG19CS191`;
 
 async function main(): Promise<void> {
 
@@ -147,15 +147,15 @@ async function getAllAssets(contract: Contract): Promise<void> {
  * Submit a transaction synchronously, blocking until it has been committed to the ledger.
  */
 async function createAsset(contract: Contract): Promise<void> {
-    console.log('\n--> Submit Transaction: CreateAsset, creates new asset with ID, Color, Size, Owner and AppraisedValue arguments');
+    console.log('\n--> Submit Transaction: CreateAsset, creates new asset with ID, Name, Owns and Points arguments');
 
     await contract.submitTransaction(
         'CreateAsset',
-        assetId,
-        'yellow',
-        '5',
-        'Tom',
-        '1300',
+        'PES1UG1000',
+        'Student',
+        'AppTest',
+        '{sandwich:10, tea:10}',
+        '2500'
     );
 
     console.log('*** Transaction committed successfully');
@@ -169,11 +169,12 @@ async function transferAssetAsync(contract: Contract): Promise<void> {
     console.log('\n--> Async Submit Transaction: TransferAsset, updates existing asset owner');
 
     const commit = await contract.submitAsync('TransferAsset', {
-        arguments: [assetId, 'Saptha'],
+        arguments: ['PES2UG19CS197','PES2UG19CS191','5'],
     });
-    const oldOwner = utf8Decoder.decode(commit.getResult());
+    const fromString = utf8Decoder.decode(commit.getResult());
+    const from = JSON.parse(fromString);
 
-    console.log(`*** Successfully submitted transaction to transfer ownership from ${oldOwner} to Saptha`);
+    console.log(`*** Successfully submitted transaction to transfer 5 points from ${from.ID} to PES2UGCS191`);
     console.log('*** Waiting for transaction commit');
 
     const status = await commit.getStatus();
@@ -203,11 +204,10 @@ async function updateNonExistentAsset(contract: Contract): Promise<void>{
     try {
         await contract.submitTransaction(
             'UpdateAsset',
-            'asset70',
-            'blue',
-            '5',
-            'Tomoko',
-            '300',
+            '000000',
+            'AppTestError',
+            '{sandwich:0, tea:0}',
+            '0000'
         );
         console.log('******** FAILED to return an error');
     } catch (error) {
