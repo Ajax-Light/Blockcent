@@ -137,7 +137,7 @@ class AssetTransfer extends Contract {
             ID: id,
             Type: type,
             Name: name,
-            Owns: owns,
+            Owns: JSON.parse(owns),
             Points: points,
         };
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
