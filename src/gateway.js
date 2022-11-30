@@ -11,7 +11,7 @@ const chaincodeName = envOrDefault('CHAINCODE_NAME', 'blockcent');
 const mspId = envOrDefault('MSP_ID', 'Org1MSP');
 
 // Path to crypto materials.
-const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, '..', '..', '..', 'fabric-samples', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com'));
+const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, '..', '..', 'fabric-samples', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com'));
 
 // Path to user private key directory.
 const keyDirectoryPath = envOrDefault('KEY_DIRECTORY_PATH', path.resolve(cryptoPath, 'users', 'User1@org1.example.com', 'msp', 'keystore'));
@@ -149,7 +149,7 @@ async function createAsset(contract) {
         'PES1UG1000',
         'Student',
         'AppTest',
-        '{sandwich:10, tea:10}',
+        '{"sandwich":10, "tea":10}',
         '2500'
     );
 
@@ -200,8 +200,9 @@ async function updateNonExistentAsset(contract) {
         await contract.submitTransaction(
             'UpdateAsset',
             '000000',
+            'Student',
             'AppTestError',
-            '{sandwich:0, tea:0}',
+            '{"sandwich":0, "tea":0}',
             '0000'
         );
         console.log('******** FAILED to return an error');
