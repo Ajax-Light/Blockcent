@@ -1,16 +1,17 @@
-import * as grpc from '@grpc/grpc-js';
-import { connect, Contract, Identity, Signer, signers } from '@hyperledger/fabric-gateway';
-import * as crypto from 'crypto';
-import { promises as fs } from 'fs';
-import * as path from 'path';
-import { TextDecoder } from 'util';
+const grpc = require('@grpc/grpc-js');
+const { connect, Contract, Identity, Signer, signers } = require('@hyperledger/fabric-gateway');
 
-const channelName = envOrDefault('CHANNEL_NAME', 'mychannel');
-const chaincodeName = envOrDefault('CHAINCODE_NAME', 'basic');
+const crypto = require('crypto');
+const fs = require('fs/promises');
+const path = require('path');
+const util = require('util');
+
+const channelName = envOrDefault('CHANNEL_NAME', 'test');
+const chaincodeName = envOrDefault('CHAINCODE_NAME', 'blockcent');
 const mspId = envOrDefault('MSP_ID', 'Org1MSP');
 
 // Path to crypto materials.
-const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, '..', '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com'));
+const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, '..', '..', 'fabric-samples', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com'));
 
 // Path to user private key directory.
 const keyDirectoryPath = envOrDefault('KEY_DIRECTORY_PATH', path.resolve(cryptoPath, 'users', 'User1@org1.example.com', 'msp', 'keystore'));
@@ -27,7 +28,7 @@ const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
 // Gateway peer SSL host name override.
 const peerHostAlias = envOrDefault('PEER_HOST_ALIAS', 'peer0.org1.example.com');
 
-const utf8Decoder = new TextDecoder();
+const utf8Decoder = new util.TextDecoder();
 const assetId = `asset${Date.now()}`;
 
 const gateway = null;
@@ -96,7 +97,7 @@ async function start() {
     }
 }
 
-main().catch(error => {
+start().catch(error => {
     console.error('******** FAILED to run the application:', error);
     process.exitCode = 1;
 });

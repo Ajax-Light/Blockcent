@@ -6,7 +6,9 @@
         "type": "git",
         "url": "https://github.com/Ajax-Light/Blockcent/tree/api"
     },
-    "author": {"name": "Ujwal Kundur"},
+    "author": {
+        "name": "Ujwal Kundur"
+    },
     "scripts": {
         "start": "node ./src/app.js",
         "dev": "nodemon ./src/app.js",
@@ -24,13 +26,8 @@
         "express": "^4.18.1"
     },
     "devDependencies": {
-        "@tsconfig/node14": "^1.0.3",
-        "@types/node": "^14.18.16",
-        "@typescript-eslint/eslint-plugin": "^5.22.0",
-        "@typescript-eslint/parser": "^5.22.0",
         "eslint": "^8.14.0",
-        "typescript": "~4.6.4",
-        "nodemon": "^2.0.19",
-        "mocha": "^10.0.0"
+        "mocha": "^10.0.0",
+        "nodemon": "^2.0.19"
     }
 }
