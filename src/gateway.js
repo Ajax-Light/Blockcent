@@ -1,17 +1,12 @@
-/*
- * Copyright IBM Corp. All Rights Reserved.
- *
- * SPDX-License-Identifier: Apache-2.0
- */
+const grpc = require('@grpc/grpc-js');
+const { connect, Contract, Identity, Signer, signers } = require('@hyperledger/fabric-gateway');
 
-import * as grpc from '@grpc/grpc-js';
-import { connect, Contract, Identity, Signer, signers } from '@hyperledger/fabric-gateway';
-import * as crypto from 'crypto';
-import { promises as fs } from 'fs';
-import * as path from 'path';
-import { TextDecoder } from 'util';
+const crypto = require('crypto');
+const fs = require('fs/promises');
+const path = require('path');
+const util = require('util');
 
-const channelName = envOrDefault('CHANNEL_NAME', 'test2');
+const channelName = envOrDefault('CHANNEL_NAME', 'test');
 const chaincodeName = envOrDefault('CHAINCODE_NAME', 'blockcent');
 const mspId = envOrDefault('MSP_ID', 'Org1MSP');
 
@@ -33,10 +28,10 @@ const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
 // Gateway peer SSL host name override.
 const peerHostAlias = envOrDefault('PEER_HOST_ALIAS', 'peer0.org1.example.com');
 
-const utf8Decoder = new TextDecoder();
+const utf8Decoder = new util.TextDecoder();
 const assetId = `PES2UG19CS191`;
 
-async function main(): Promise<void> {
+async function main() {
 
     await displayInputParameters();
 
@@ -97,7 +92,7 @@ main().catch(error => {
     process.exitCode = 1;
 });
 
-async function newGrpcConnection(): Promise<grpc.Client> {
+async function newGrpcConnection() {
     const tlsRootCert = await fs.readFile(tlsCertPath);
     const tlsCredentials = grpc.credentials.createSsl(tlsRootCert);
     return new grpc.Client(peerEndpoint, tlsCredentials, {
@@ -105,12 +100,12 @@ async function newGrpcConnection(): Promise<grpc.Client> {
     });
 }
 
-async function newIdentity(): Promise<Identity> {
+async function newIdentity() {
     const credentials = await fs.readFile(certPath);
     return { mspId, credentials };
 }
 
-async function newSigner(): Promise<Signer> {
+async function newSigner() {
     const files = await fs.readdir(keyDirectoryPath);
     const keyPath = path.resolve(keyDirectoryPath, files[0]);
     const privateKeyPem = await fs.readFile(keyPath);
@@ -122,7 +117,7 @@ async function newSigner(): Promise<Signer> {
  * This type of transaction would typically only be run once by an application the first time it was started after its
  * initial deployment. A new version of the chaincode deployed later would likely not need to run an "init" function.
  */
-async function initLedger(contract: Contract): Promise<void> {
+async function initLedger(contract) {
     console.log('\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger');
 
     await contract.submitTransaction('InitLedger');
@@ -133,7 +128,7 @@ async function initLedger(contract: Contract): Promise<void> {
 /**
  * Evaluate a transaction to query ledger state.
  */
-async function getAllAssets(contract: Contract): Promise<void> {
+async function getAllAssets(contract) {
     console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
 
     const resultBytes = await contract.evaluateTransaction('GetAllAssets');
@@ -146,7 +141,7 @@ async function getAllAssets(contract: Contract): Promise<void> {
 /**
  * Submit a transaction synchronously, blocking until it has been committed to the ledger.
  */
-async function createAsset(contract: Contract): Promise<void> {
+async function createAsset(contract) {
     console.log('\n--> Submit Transaction: CreateAsset, creates new asset with ID, Name, Owns and Points arguments');
 
     await contract.submitTransaction(
@@ -165,7 +160,7 @@ async function createAsset(contract: Contract): Promise<void> {
  * Submit transaction asynchronously, allowing the application to process the smart contract response (e.g. update a UI)
  * while waiting for the commit notification.
  */
-async function transferAssetAsync(contract: Contract): Promise<void> {
+async function transferAssetAsync(contract) {
     console.log('\n--> Async Submit Transaction: TransferAsset, updates existing asset owner');
 
     const commit = await contract.submitAsync('TransferAsset', {
@@ -185,7 +180,7 @@ async function transferAssetAsync(contract: Contract): Promise<void> {
     console.log('*** Transaction committed successfully');
 }
 
-async function readAssetByID(contract: Contract): Promise<void> {
+async function readAssetByID(contract) {
     console.log('\n--> Evaluate Transaction: ReadAsset, function returns asset attributes');
 
     const resultBytes = await contract.evaluateTransaction('ReadAsset', assetId);
@@ -198,8 +193,8 @@ async function readAssetByID(contract: Contract): Promise<void> {
 /**
  * submitTransaction() will throw an error containing details of any error responses from the smart contract.
  */
-async function updateNonExistentAsset(contract: Contract): Promise<void>{
-    console.log('\n--> Submit Transaction: UpdateAsset asset70, asset70 does not exist and should return an error');
+async function updateNonExistentAsset(contract) {
+    console.log('\n--> Submit Transaction: UpdateAsset 000000, 000000 does not exist and should return an error');
 
     try {
         await contract.submitTransaction(
@@ -218,14 +213,14 @@ async function updateNonExistentAsset(contract: Contract): Promise<void>{
 /**
  * envOrDefault() will return the value of an environment variable, or a default value if the variable is undefined.
  */
-function envOrDefault(key: string, defaultValue: string): string {
+function envOrDefault(key, defaultValue) {
     return process.env[key] || defaultValue;
 }
 
 /**
  * displayInputParameters() will print the global scope parameters used by the main driver routine.
  */
-async function displayInputParameters(): Promise<void> {
+async function displayInputParameters() {
     console.log(`channelName:       ${channelName}`);
     console.log(`chaincodeName:     ${chaincodeName}`);
     console.log(`mspId:             ${mspId}`);
