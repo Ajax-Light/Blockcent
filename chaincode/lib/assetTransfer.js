@@ -14,12 +14,12 @@ class AssetTransfer extends Contract {
                 Type: 'Student',
                 Name: 'Ujwal Kundur',
                 Owns: {
-                    sandwich: 2,
-                    tea: 1,
-                    amazon: 0,
-                    flipkart: 0,
-                    recommendLetter: 0,
-                    internship: 0
+                    "sandwich": 2,
+                    "tea": 1,
+                    "amazon": 0,
+                    "flipkart": 0,
+                    "recommendLetter": 0,
+                    "internship": 0
                 },
                 Points: 300,
             },
@@ -28,12 +28,12 @@ class AssetTransfer extends Contract {
                 Type: 'Student',
                 Name: 'Aashutosh Konge',
                 Owns: {
-                    sandwich: 1,
-                    tea: 0,
-                    amazon: 0,
-                    flipkart: 1,
-                    recommendLetter: 0,
-                    internship: 0
+                    "sandwich": 1,
+                    "tea": 0,
+                    "amazon": 0,
+                    "flipkart": 1,
+                    "recommendLetter": 0,
+                    "internship": 0
                 },
                 Points: 200,
             },
@@ -42,12 +42,12 @@ class AssetTransfer extends Contract {
                 Type: 'Student',
                 Name: 'Atharv Gupta',
                 Owns: {
-                    sandwich: 0,
-                    tea: 2,
-                    amazon: 1,
-                    flipkart: 0,
-                    recommendLetter: 0,
-                    internship: 0
+                    "sandwich": 0,
+                    "tea": 2,
+                    "amazon": 1,
+                    "flipkart": 0,
+                    "recommendLetter": 0,
+                    "internship": 0
                 },
                 Points: 100,
             },
@@ -56,12 +56,12 @@ class AssetTransfer extends Contract {
                 Type: 'Student',
                 Name: 'Sanjana S',
                 Owns: {
-                    sandwich: 5,
-                    tea: 10,
-                    amazon: 0,
-                    flipkart: 0,
-                    recommendLetter: 0,
-                    internship: 1
+                    "sandwich": 5,
+                    "tea": 10,
+                    "amazon": 0,
+                    "flipkart": 0,
+                    "recommendLetter": 0,
+                    "internship": 1
                 },
                 Points: 50,
             },
@@ -70,12 +70,12 @@ class AssetTransfer extends Contract {
                 Type: 'Student',
                 Name: 'Rahul',
                 Owns: {
-                    sandwich: 1,
-                    tea: 1,
-                    amazon: 1,
-                    flipkart: 1,
-                    recommendLetter: 1,
-                    internship: 1
+                    "sandwich": 1,
+                    "tea": 1,
+                    "amazon": 1,
+                    "flipkart": 1,
+                    "recommendLetter": 1,
+                    "internship": 1
                 },
                 Points: 10,
             },
