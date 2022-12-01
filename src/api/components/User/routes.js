@@ -7,9 +7,13 @@ const user_ctrl = require('./controller')
 const express = require('express')
 const router = express.Router()
 
-router.get("/users/:userid", (req, res) => {
-    res.json(user_ctrl.view())
-    // res.send(req.params.userid)'s info ??
+router.get("/:userid", async (req, res) => {
+    const userDetails = await user_ctrl.view(req.params.userid);
+    if(userDetails === null) {
+        res.status(404).json('NOT FOUND');
+    }else {
+        res.json(userDetails);
+    }
 });
 
 module.exports = router 

@@ -51,8 +51,7 @@ class Gateway {
 
     async newIdentity() {
         const credentials = await fs.readFile(this.certPath);
-        const mid = this.mspId;
-        return { mid, credentials };
+        return { mspId: this.mspId, credentials };
     }
 
     async newSigner() {
@@ -99,6 +98,8 @@ class Gateway {
             // Get the smart contract from the network.
             const contract = network.getContract(this.chaincodeName);
             this.contract = contract;
+
+            this.initLedger(contract);
         } catch (error) {
             console.error('******** FAILED to connect to Fabric Gateway', error);
             process.exitCode = 1;
@@ -144,8 +145,8 @@ class Gateway {
         this.client.close();
     }
 
-    get getContract() {
-        return this.contract();
+    getContract() {
+        return this.contract;
     }
 
     /**
@@ -155,7 +156,7 @@ class Gateway {
     async initLedger(contract) {
         console.log('\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger');
 
-        await contract.submitTransaction('InitLedger');
+        await this.contract.submitTransaction('InitLedger');
 
         console.log('*** Transaction committed successfully');
     }
@@ -215,14 +216,21 @@ class Gateway {
         console.log('*** Transaction committed successfully');
     }
 
-    async readAssetByID(contract) {
+    async readAssetByID(assetId) {
         console.log('\n--> Evaluate Transaction: ReadAsset, function returns asset attributes');
 
-        const resultBytes = await contract.evaluateTransaction('ReadAsset', this.assetId);
+        let resultBytes;
+        try {
+            resultBytes = await this.contract.evaluateTransaction('ReadAsset', assetId);
+        } catch (error){
+            console.error(`*** Asset ${assetId} does not exist`);
+            return null;
+        }
 
         const resultJson = this.utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
-        console.log('*** Result:', result);
+        console.log(`*** Reading Asset ${assetId}:\n`, result);
+        return result;
     }
 
     /**
@@ -269,5 +277,5 @@ class Gateway {
     }
 }
 
-let g = new Gateway();
+const g = new Gateway();
 module.exports = g;
