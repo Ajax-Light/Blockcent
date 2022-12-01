@@ -3,6 +3,7 @@
 */
 
 const express = require('express');
+const body_parser = require('body-parser');
 const routes = require('./routes');
 
 const app = express();
@@ -13,6 +14,9 @@ function init_component_routes(){
 }
 
 function start(){
+    app.use(body_parser.json());                        // For JSON-Encoded Bodies
+    app.use(body_parser.urlencoded({extended:true}));   // For URL-Encoded Bodies
+
     init_component_routes();
 
     app.listen(port, () => {
