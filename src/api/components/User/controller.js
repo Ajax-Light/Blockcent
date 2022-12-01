@@ -14,3 +14,7 @@ exports.viewAll = async function() {
 exports.create = async function(obj) {
     return await conn.createAsset(obj);
 }
+
+exports.transfer = async function(from, to, points){
+    return await conn.transferAssetAsync(from, to, points);
+}

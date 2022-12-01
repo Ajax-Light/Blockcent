@@ -175,20 +175,20 @@ class Gateway {
     async transferAssetAsync(fromId, toId, points) {
         console.log(`\n--> Async Submit Transaction:\n From: ${fromId} To: ${toId} Value: ${points}`);
 
-        const commit = await this.contract.submitAsync('TransferAsset', {
-            arguments: [fromId, toId, points],
-        });
-        const fromString = this.utf8Decoder.decode(commit.getResult());
-        const from = JSON.parse(fromString);
+        try {
+            const commit = await this.contract.submitAsync('TransferAsset', {
+                arguments: [fromId, toId, points],
+            });
 
-        console.log(`*** Successfully submitted transaction to transfer ${points} points from ${fromId} to ${toId}`);
-        console.log('*** Waiting for transaction commit');
-
-        const status = await commit.getStatus();
-        if (!status.successful) {
-            console.error(`Transaction ${status.transactionId} failed to commit with status code ${status.code}`);
+            const fromString = this.utf8Decoder.decode(commit.getResult());
+            const from = JSON.parse(fromString);
+        } catch (error) {
+            console.error(`Transfer of ${points} points from ${fromId} to ${toId} failed due to Insufficient funds.`);
             return false;
         }
+        
+        console.log(`*** Successfully submitted transaction to transfer ${points} points from ${fromId} to ${toId}`);
+        console.log('*** Waiting for transaction commit');
 
         console.log('*** Transaction committed successfully');
         return true;

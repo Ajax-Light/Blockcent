@@ -29,4 +29,13 @@ router.post("/create", async (req, res) => {
     }
 });
 
+router.put("/transfer/:from-:to-:points", async (req, res) => {
+    const success = await user_ctrl.transfer(req.params.from, req.params.to, req.params.points);
+    if(success) {
+        res.status(200).json({"success" : true});
+    }else {
+        res.status(500).json({"success" : false});
+    }
+});
+
 module.exports = router 
