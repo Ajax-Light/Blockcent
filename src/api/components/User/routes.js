@@ -16,4 +16,17 @@ router.get("/:userid", async (req, res) => {
     }
 });
 
+router.get("/", async (req, res) => {
+    res.json(await user_ctrl.viewAll());
+});
+
+router.post("/create", async (req, res) => {
+    const success = await user_ctrl.create(req.body);
+    if(success) {
+        res.status(200).json({"success" : true});
+    }else {
+        res.status(500).json({"success" : false});
+    }
+});
+
 module.exports = router 
