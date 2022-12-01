@@ -9,17 +9,17 @@ Blockcent uses the [Hyperledger Fabric](https://github.com/hyperledger/fabric) b
 
 ## Developers
 
-* [Ujwal Kundur](https://github.com/Ajax-Light/) - Backend, Systems and Architecture
+* [Ujwal Kundur](https://github.com/Ajax-Light/) - Systems, Architecture, API, Hyperledger Fabric Blockchain
 
 * [Aashutosh Konge](https://github.com/kaash-bot) - Frontend and UI
 
 * [Sanjana S](https://github.com/sanjana87) - UI/UX
 
-* [Atharva Gupta](https://github.com/AtharvaGupta01) - Middleware and API design
+* [Atharva Gupta](https://github.com/AtharvaGupta01) - UI/UX
 
 ## Tech Stack
 
-* React.js
+* React.js / Next.js
 
 * Material-UI
 
@@ -30,3 +30,20 @@ Blockcent uses the [Hyperledger Fabric](https://github.com/hyperledger/fabric) b
 * Hyperledger Fabric permissioned blockchain
 
 * Docker and docker-compose
+
+## Usage
+
+1. Clone this repo
+
+2. Run `npm install`
+
+3. Start the components in the following order:
+    1. Start up Fabric and Deploy chaincode in a Channel
+
+    2. Start API with `npm start`
+
+    3. Start frontend with `npm run dev`
+
+    4. We also provide `npm run all` to start both API and Frontend parallelly
+
+4. Visit `localhost:3000`
