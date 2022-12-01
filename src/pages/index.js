@@ -10,7 +10,18 @@ import { TotalProfit } from '../components/dashboard/total-profit';
 import { TrafficByDevice } from '../components/dashboard/traffic-by-device';
 import { DashboardLayout } from '../components/dashboard-layout';
 
-const Dashboard = () => (
+export async function getServerSideProps() {
+  const res = await fetch('http://localhost:8090/api/users/PES2UG19CS363')
+  const data = await res.json();
+  
+  return {
+    props: {
+      data
+    }
+  };
+}
+
+const Dashboard = ({ data }) => (
   <>
     <Head>
       <title>
@@ -36,7 +47,7 @@ const Dashboard = () => (
             xl={3}
             xs={12}
           >
-            <Budget />
+            <Budget data={data}/>
           </Grid>
           <Grid
             item
