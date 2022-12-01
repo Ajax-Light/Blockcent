@@ -99,45 +99,12 @@ class Gateway {
             const contract = network.getContract(this.chaincodeName);
             this.contract = contract;
 
-            this.initLedger(contract);
+            this.initLedger();
         } catch (error) {
             console.error('******** FAILED to connect to Fabric Gateway', error);
             process.exitCode = 1;
         }
     
-        /*
-        try {
-            // Get a network instance representing the channel where the smart contract is deployed.
-            const network = gateway.getNetwork(channelName);
-
-            // Get the smart contract from the network.
-            const contract = network.getContract(chaincodeName);
-
-            // Initialize a set of asset data on the ledger using the chaincode 'InitLedger' function.
-            await initLedger(contract);
-
-            // Return all the current assets on the ledger.
-            await getAllAssets(contract);
-
-            // Create a new asset on the ledger.
-            await createAsset(contract);
-
-            // Update an existing asset asynchronously.
-            await transferAssetAsync(contract);
-
-            // Get the asset details by assetID.
-            await readAssetByID(contract);
-
-            // Update an asset which does not exist.
-            await updateNonExistentAsset(contract)
-        } catch(error){
-            console.error('******** FAILED to run the application:', error);
-            process.exitCode = 1;
-        } finally {
-            gateway.close();
-            client.close();
-        }
-        */
     }
 
     async disconnect() {
@@ -153,7 +120,7 @@ class Gateway {
      * This type of transaction would typically only be run once by an application the first time it was started after its
      * initial deployment. A new version of the chaincode deployed later would likely not need to run an "init" function.
      */
-    async initLedger(contract) {
+    async initLedger() {
         console.log('\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger');
 
         await this.contract.submitTransaction('InitLedger');
@@ -164,56 +131,65 @@ class Gateway {
     /**
      * Evaluate a transaction to query ledger state.
      */
-    async getAllAssets(contract) {
+    async getAllAssets() {
         console.log('\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger');
 
-        const resultBytes = await contract.evaluateTransaction('GetAllAssets');
+        const resultBytes = await this.contract.evaluateTransaction('GetAllAssets');
 
         const resultJson = this.utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         console.log('*** Result:', result);
+        return result;
     }
 
     /**
      * Submit a transaction synchronously, blocking until it has been committed to the ledger.
      */
-    async createAsset(contract) {
+    async createAsset(obj) {
         console.log('\n--> Submit Transaction: CreateAsset, creates new asset with ID, Name, Owns and Points arguments');
 
-        await contract.submitTransaction(
-            'CreateAsset',
-            'PES1UG1000',
-            'Student',
-            'AppTest',
-            '{"sandwich":10, "tea":10}',
-            '2500'
-        );
-
+        try {
+            await this.contract.submitTransaction(
+                'CreateAsset',
+                obj.id,
+                obj.type,
+                obj.name,
+                obj.owns,
+                obj.points
+            );
+        } catch (error) {
+            console.error('*** Asset Creation Error');
+            return false;
+        }
+        
         console.log('*** Transaction committed successfully');
+        return true;
     }
 
     /**
      * Submit transaction asynchronously, allowing the application to process the smart contract response (e.g. update a UI)
      * while waiting for the commit notification.
      */
-    async transferAssetAsync(contract) {
-        console.log('\n--> Async Submit Transaction: TransferAsset, updates existing asset owner');
+    async transferAssetAsync(fromId, toId, points) {
+        console.log(`\n--> Async Submit Transaction:\n From: ${fromId} To: ${toId} Value: ${points}`);
 
-        const commit = await contract.submitAsync('TransferAsset', {
-            arguments: ['PES2UG19CS197','PES2UG19CS191','5'],
+        const commit = await this.contract.submitAsync('TransferAsset', {
+            arguments: [fromId, toId, points],
         });
         const fromString = this.utf8Decoder.decode(commit.getResult());
         const from = JSON.parse(fromString);
 
-        console.log(`*** Successfully submitted transaction to transfer 5 points from ${from.ID} to PES2UGCS191`);
+        console.log(`*** Successfully submitted transaction to transfer ${points} points from ${fromId} to ${toId}`);
         console.log('*** Waiting for transaction commit');
 
         const status = await commit.getStatus();
         if (!status.successful) {
-            throw new Error(`Transaction ${status.transactionId} failed to commit with status code ${status.code}`);
+            console.error(`Transaction ${status.transactionId} failed to commit with status code ${status.code}`);
+            return false;
         }
 
         console.log('*** Transaction committed successfully');
+        return true;
     }
 
     async readAssetByID(assetId) {
@@ -236,11 +212,11 @@ class Gateway {
     /**
      * submitTransaction() will throw an error containing details of any error responses from the smart contract.
      */
-    async updateNonExistentAsset(contract) {
+    async updateNonExistentAsset(assetId) {
         console.log('\n--> Submit Transaction: UpdateAsset 000000, 000000 does not exist and should return an error');
 
         try {
-            await contract.submitTransaction(
+            await this.contract.submitTransaction(
                 'UpdateAsset',
                 '000000',
                 'Student',
