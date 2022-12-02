@@ -5,7 +5,7 @@ export const products = [
     id: uuid(),
     createdAt: '02/12/2022',
     description: 'Order Tea / Coffee from the Canteen.',
-    media: '/static/images/products/product_1.png',
+    media: '/static/images/products/coffee.png',
     title: 'Tea/Coffee',
     worth: '50'
   },
@@ -13,7 +13,7 @@ export const products = [
     id: uuid(),
     createdAt: '02/12/2022',
     description: 'Order a Fresh Sandwich from the Canteen.',
-    media: '/static/images/products/product_2.png',
+    media: '/static/images/products/sandwich.png',
     title: 'Sandwich',
     worth: '100'
   },
@@ -21,7 +21,7 @@ export const products = [
     id: uuid(),
     createdAt: '02/12/2022',
     description: 'Order a Fresh Burger from the Canteen.',
-    media: '/static/images/products/product_3.png',
+    media: '/static/images/products/burger.png',
     title: 'Burger',
     worth: '125'
   },
@@ -29,7 +29,7 @@ export const products = [
     id: uuid(),
     createdAt: '02/12/2022',
     description: 'Approve a Due extension for returning books to the library.',
-    media: '/static/images/products/product_4.png',
+    media: '/static/images/products/library.png',
     title: 'Library Due Extension',
     worth: '200'
   },
@@ -37,7 +37,7 @@ export const products = [
     id: uuid(),
     createdAt: '02/12/2022',
     description: 'Request a Letter of Recommendation from a professor.',
-    media: '/static/images/products/product_5.png',
+    media: '/static/images/products/lor.png',
     title: 'Letter of Recommendation',
     worth: '1000'
   },
@@ -45,7 +45,7 @@ export const products = [
     id: uuid(),
     createdAt: '02/12/2022',
     description: 'Request Internship recommendations from a professor.',
-    media: '/static/images/products/product_6.png',
+    media: '/static/images/products/internship.png',
     title: 'Internship',
     worth: '5000'
   }
