@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Avatar, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 import { Clock as ClockIcon } from '../../icons/clock';
 import { Download as DownloadIcon } from '../../icons/download';
+import { Point as PointIcon} from '../../icons/point';
 
 export const ProductCard = ({ product, ...rest }) => (
   <Card
@@ -48,7 +49,7 @@ export const ProductCard = ({ product, ...rest }) => (
       <Grid
         container
         spacing={2}
-        sx={{ justifyContent: 'space-between' }}
+        sx={{ justifyContent: 'center' }}
       >
         <Grid
           item
@@ -57,33 +58,16 @@ export const ProductCard = ({ product, ...rest }) => (
             display: 'flex'
           }}
         >
-          <ClockIcon color="action" />
+          <PointIcon color="action" />
           <Typography
             color="textSecondary"
             display="inline"
             sx={{ pl: 1 }}
             variant="body2"
           >
-            Updated 2hr ago
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          sx={{
-            alignItems: 'center',
-            display: 'flex'
-          }}
-        >
-          <DownloadIcon color="action" />
-          <Typography
-            color="textSecondary"
-            display="inline"
-            sx={{ pl: 1 }}
-            variant="body2"
-          >
-            {product.totalDownloads}
+            {product.worth}
             {' '}
-            Downloads
+            Points
           </Typography>
         </Grid>
       </Grid>
