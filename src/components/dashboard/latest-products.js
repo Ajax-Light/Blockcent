@@ -18,32 +18,32 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 const products = [
   {
     id: uuid(),
-    name: 'Dropbox',
-    imageUrl: '/static/images/products/product_1.png',
+    name: 'Tea/Coffee',
+    imageUrl: '/static/images/products/coffee.png',
     updatedAt: subHours(Date.now(), 2)
   },
   {
     id: uuid(),
-    name: 'Medium Corporation',
-    imageUrl: '/static/images/products/product_2.png',
+    name: 'Sandwich',
+    imageUrl: '/static/images/products/sandwich.png',
     updatedAt: subHours(Date.now(), 2)
   },
   {
     id: uuid(),
-    name: 'Slack',
-    imageUrl: '/static/images/products/product_3.png',
+    name: 'Burger',
+    imageUrl: '/static/images/products/burger.png',
     updatedAt: subHours(Date.now(), 3)
   },
   {
     id: uuid(),
-    name: 'Lyft',
-    imageUrl: '/static/images/products/product_4.png',
+    name: 'Letter of Recommendation',
+    imageUrl: '/static/images/products/lor.png',
     updatedAt: subHours(Date.now(), 5)
   },
   {
     id: uuid(),
-    name: 'GitHub',
-    imageUrl: '/static/images/products/product_5.png',
+    name: 'Internship',
+    imageUrl: '/static/images/products/internship.png',
     updatedAt: subHours(Date.now(), 9)
   }
 ];
