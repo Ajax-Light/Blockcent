@@ -211,6 +211,23 @@ class Gateway {
         return result;
     }
 
+    async getUserHistory(userId) {
+        console.log('\n--> Evaluate Transaction: GetUserHistory, function returns User Txn history');
+
+        let resultBytes;
+        try {
+            resultBytes = await this.contract.evaluateTransaction('GetTransactions', userId);
+        } catch (error){
+            console.error(`*** User ${userId} does not exist`);
+            return null;
+        }
+
+        const resultJson = this.utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        console.log(`*** Reading User ${userId} History:\n`, result);
+        return result;
+    }
+
     /**
      * submitTransaction() will throw an error containing details of any error responses from the smart contract.
      */

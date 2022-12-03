@@ -20,6 +20,10 @@ router.get("/", async (req, res) => {
     res.json(await user_ctrl.viewAll());
 });
 
+router.get("/history/:userid", async (req, res) => {
+    res.json(await user_ctrl.viewHistory(req.params.userid));
+});
+
 router.post("/create", async (req, res) => {
     const success = await user_ctrl.create(req.body);
     if(success) {

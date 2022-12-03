@@ -11,6 +11,10 @@ exports.viewAll = async function() {
     return await conn.getAllAssets();
 }
 
+exports.viewHistory = async function(userid) {
+    return await conn.getUserHistory(userid);
+}
+
 exports.create = async function(obj) {
     return await conn.createAsset(obj);
 }
