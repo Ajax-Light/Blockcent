@@ -165,22 +165,38 @@ class AssetTransfer extends Contract {
         if (!existsFrom) {
             throw new Error(`The asset ${id_from} does not exist`);
         }
+
         const existsTo = await this.AssetExists(ctx, id_to);
         if (!existsTo) {
             throw new Error(`The asset ${id_to} does not exist`);
         }
+
         const fromString = await this.ReadAsset(ctx, id_from);
         const toString = await this.ReadAsset(ctx, id_to);
         const from = JSON.parse(fromString);
         const to = JSON.parse(toString);
+
         if (parseInt(from.Points) - parseInt(points) < 0) {
             throw new Error(`Insufficient points to transfer ${points} from ${id_from} to ${id_to}`);
         }
         to.Points = parseInt(to.Points) + parseInt(points);
         from.Points = parseInt(from.Points) - parseInt(points);
+
+        // Handle creating Txn History data
+        const hist = {
+            id: ctx.stub.getBinding(),
+            timestamp: ctx.stub.getDateTimestamp(),
+            from: id_from,
+            to: id_to,
+            points: points
+        };
+
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
         await ctx.stub.putState(id_from, Buffer.from(stringify(sortKeysRecursive(from))));
         await ctx.stub.putState(id_to, Buffer.from(stringify(sortKeysRecursive(to))));
+        // add hist data to both sender and receiver keys to get history both ways
+        await ctx.stub.putState(`trans+${id_from}`, Buffer.from(stringify(sortKeysRecursive(hist))));
+        await ctx.stub.putState(`trans+${id_to}`, Buffer.from(stringify(sortKeysRecursive(hist))));
         return from;
     }
 
@@ -203,6 +219,27 @@ class AssetTransfer extends Contract {
             result = await iterator.next();
         }
         return JSON.stringify(allResults);
+    }
+
+    // GetTransactions resturns all transactions made by a user.
+    async GetTransactions(ctx, userId) {
+        const allTxns = [];
+        // returns HistoryQueryIterator
+        const iterator = await ctx.stub.getHistoryForKey(`trans+${userId}`);
+        let result = await iterator.next();
+        while(!result.done) {
+            const strValue = Buffer.from(result.value.value.toString()).toString('utf8');
+            let record;
+            try {
+                record = JSON.parse(strValue);
+            } catch (err) {
+                console.error(err);
+                record = strValue;
+            }
+            allTxns.push(record);
+            result = await iterator.next();
+        }
+        return JSON.stringify(allTxns);
     }
 }
 
