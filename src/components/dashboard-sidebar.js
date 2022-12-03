@@ -35,11 +35,6 @@ const items = [
     title: 'Settings'
   },
   {
-    href: '/login',
-    icon: (<LockIcon fontSize="small" />),
-    title: 'Login'
-  },
-  {
     href: '/register',
     icon: (<UserAddIcon fontSize="small" />),
     title: 'Register'
