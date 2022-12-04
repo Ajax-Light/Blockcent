@@ -15,9 +15,13 @@ export async function getServerSideProps({req, resp}) {
     console.error(`\n-> userid Cookie is undefined`);
   }
 
-  const res = await fetch(`http://localhost:8090/api/users/${userid}`)
-  const data = await res.json();
+  let res = await fetch(`http://localhost:8090/api/users/${userid}`);
+  let data = await res.json();
   
+  res = await fetch(`http://localhost:8090/api/users/history/${userid}`);
+  const histData = await res.json();
+  data.histData = histData;
+
   return {
     props: {
       data
@@ -100,7 +104,7 @@ function Dashboard({ data }) {
               xl={9}
               xs={12}
             >
-              <LatestOrders />
+              <LatestOrders data={data} />
             </Grid>
           </Grid>
         </Container>

@@ -69,10 +69,16 @@ export const LatestOrders = (props) => (
           <TableHead>
             <TableRow>
               <TableCell>
-                Order Ref
+                TXN Hash
               </TableCell>
               <TableCell>
-                Item
+                From
+              </TableCell>
+              <TableCell>
+                To
+              </TableCell>
+              <TableCell>
+                Points
               </TableCell>
               <TableCell sortDirection="desc">
                 <Tooltip
@@ -83,7 +89,7 @@ export const LatestOrders = (props) => (
                     active
                     direction="desc"
                   >
-                    Date
+                    Timestamp
                   </TableSortLabel>
                 </Tooltip>
               </TableCell>
@@ -93,27 +99,31 @@ export const LatestOrders = (props) => (
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
+            {props.data.histData.map((order) => (
               <TableRow
                 hover
                 key={order.id}
               >
                 <TableCell>
-                  {order.ref}
+                  {order.id.substring(0,10)}
                 </TableCell>
                 <TableCell>
-                  {order.item.name}
+                  {order.from}
                 </TableCell>
                 <TableCell>
-                  {format(order.createdAt, 'dd/MM/yyyy')}
+                  {order.to}
+                </TableCell>
+                <TableCell>
+                  {order.points}
+                </TableCell>
+                <TableCell>
+                  {Date.parse(order.timestamp)}
                 </TableCell>
                 <TableCell>
                   <SeverityPill
-                    color={(order.status === 'delivered' && 'success')
-                    || (order.status === 'refunded' && 'error')
-                    || 'warning'}
+                    color={'success'}
                   >
-                    {order.status}
+                    Committed
                   </SeverityPill>
                 </TableCell>
               </TableRow>
