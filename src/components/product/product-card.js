@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
-import { Avatar, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
-import { Clock as ClockIcon } from '../../icons/clock';
-import { Download as DownloadIcon } from '../../icons/download';
+import { Avatar, Box, Card, CardContent, Divider, Grid, Typography, Button } from '@mui/material';
 import { Point as PointIcon} from '../../icons/point';
 
 export const ProductCard = ({ product, ...rest }) => (
@@ -58,17 +56,22 @@ export const ProductCard = ({ product, ...rest }) => (
             display: 'flex'
           }}
         >
-          <PointIcon color="action" />
-          <Typography
-            color="textSecondary"
-            display="inline"
-            sx={{ pl: 1 }}
-            variant="body2"
+          <Button
+            color="secondary"
+            variant="contained"
           >
-            {product.worth}
-            {' '}
-            Points
-          </Typography>
+            <PointIcon color="primary" />
+            <Typography
+              color="textPrimary"
+              display="inline"
+              sx={{ pl: 1 }}
+              variant="body2"
+            >
+              {product.worth}
+              {' '}
+              Points
+            </Typography>
+          </Button>
         </Grid>
       </Grid>
     </Box>

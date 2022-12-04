@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { Box, Button, Divider, Drawer, Typography, useMediaQuery } from '@mui/material';
 import { ChartBar as ChartBarIcon } from '../icons/chart-bar';
 import { Cog as CogIcon } from '../icons/cog';
-import { Lock as LockIcon } from '../icons/lock';
 import { ShoppingBag as ShoppingBagIcon } from '../icons/shopping-bag';
+import { Upload as UploadIcon} from '../icons/upload';
 import { User as UserIcon } from '../icons/user';
 import { UserAdd as UserAddIcon } from '../icons/user-add';
 import { XCircle as XCircleIcon } from '../icons/x-circle';
@@ -23,6 +23,11 @@ const items = [
     href: '/products',
     icon: (<ShoppingBagIcon fontSize="small" />),
     title: 'Products'
+  },
+  {
+    href: '/transfer',
+    icon: (<UploadIcon fontsize="small" />),
+    title: 'Transfer'
   },
   {
     href: '/account',
