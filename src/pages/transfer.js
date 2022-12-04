@@ -1,61 +1,41 @@
 import Head from 'next/head';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useRouter } from 'next/router';
+import NextLink from 'next/link';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 
-export async function getServerSideProps() {
-  const res = await fetch('http://localhost:8090/api/users')
-  const data = await res.json();
-  
-  return {
-    props: {
-      data
-    }
-  };
-}
-
-const Login = ({ data }) => {
+const Transfer = ({ data }) => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      id: 'PES2UGXXXXXXX',
-      password: 'password'
+      from: 'PES2UGXXXXXXX',
+      to: 'PES2UGXXXXXXX',
+      points: 0
     },
     validationSchema: Yup.object({
-      id: Yup
+      from: Yup
         .string()
         .max(255)
         .required(
-          'SRN is required'),
-      password: Yup
+          'Enter Sender ID'),
+      to: Yup
         .string()
         .max(255)
         .required(
-          'Password is required')
+          'Enter Recipient ID')
     }),
-    onSubmit: (id) => {
-      const auth = false;
-      for(let i = 0; i < data.length; ++i){
-        if(data[i].ID === id.id){
-          auth = true;
-          break;
-        }
-      }
-      if(auth){
-        router.push("/dashboard");
-      }
-      else
-        router.push("/404")
+    /* Add logic to check transaction possible below */
+    onSubmit: (to, points) => {
+        
     }
   });
 
   return (
     <>
-    
       <Head>
-        <title>Login | Blockcent</title>
+        <title>Transfer | Blockcent</title>
       </Head>
       <Box
         component="main"
@@ -67,20 +47,31 @@ const Login = ({ data }) => {
         }}
       >
         <Container maxWidth="sm">
+        <NextLink
+            href="/dashboard"
+            passHref
+          >
+            <Button
+              component="a"
+              startIcon={<ArrowBackIcon fontSize="small" />}
+            >
+              Dashboard
+            </Button>
+          </NextLink>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography
                 color="textPrimary"
                 variant="h4"
               >
-                Sign in
+                Transfer
               </Typography>
               <Typography
                 color="textSecondary"
                 gutterBottom
                 variant="body2"
               >
-                Sign in on the internal platform
+                Transfer points from one user to another legally
               </Typography>
             </Box>
             <Box
@@ -94,33 +85,45 @@ const Login = ({ data }) => {
                 color="textSecondary"
                 variant="body1"
               >
-                Login with respective ID/SRN
+                Enter details to execute transfer
               </Typography>
             </Box>
             <TextField
-              error={Boolean(formik.touched.id && formik.errors.id)}
+              error={Boolean(formik.touched.from && formik.errors.from)}
               fullWidth
-              helperText={formik.touched.id && formik.errors.id}
-              label="SRN"
+              helperText={formik.touched.from && formik.errors.from}
+              label="FROM"
               margin="normal"
-              name="id"
+              name="from"
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
               type="text"
-              value={formik.values.id}
+              value={formik.values.from}
               variant="outlined"
             />
             <TextField
-              error={Boolean(formik.touched.password && formik.errors.password)}
+              error={Boolean(formik.touched.to && formik.errors.to)}
               fullWidth
-              helperText={formik.touched.password && formik.errors.password}
-              label="Password"
+              helperText={formik.touched.to && formik.errors.to}
+              label="TO"
               margin="normal"
-              name="password"
+              name="to"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              type="password"
-              value={formik.values.password}
+              type="text"
+              value={formik.values.to}
+              variant="outlined"
+            />
+            <TextField
+              error={Boolean(formik.touched.points && formik.errors.points)}
+              fullWidth
+              helperText={formik.touched.points && formik.errors.points}
+              label="POINTS"
+              margin="normal"
+              name="points"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="number"
+              value={formik.values.points}
               variant="outlined"
             />
             <Box sx={{ py: 2 }}>
@@ -132,30 +135,9 @@ const Login = ({ data }) => {
                 type="submit"
                 variant="contained"
               >
-                Sign In Now
+                Transfer
               </Button>
             </Box>
-            <Typography
-              color="textSecondary"
-              variant="body2"
-            >
-              Don&apos;t have an account?
-              {' '}
-              <NextLink
-                href="/register"
-              >
-                <Link
-                  to="/register"
-                  variant="subtitle2"
-                  underline="hover"
-                  sx={{
-                    cursor: 'pointer'
-                  }}
-                >
-                  Sign Up
-                </Link>
-              </NextLink>
-            </Typography>
           </form>
         </Container>
       </Box>
@@ -163,4 +145,4 @@ const Login = ({ data }) => {
   );
 };
 
-export default Login;
+export default Transfer;
