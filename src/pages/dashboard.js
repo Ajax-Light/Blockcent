@@ -9,8 +9,7 @@ import { TotalPoints } from '../components/dashboard/total-points';
 import { DashboardLayout } from '../components/dashboard-layout';
 
 export async function getServerSideProps() {
-  const user = "PES2UG19CS197"
-  const res = await fetch('http://localhost:8090/api/users/' + user)
+  const res = await fetch('http://localhost:8090/api/users/PES2UG19CS197')
   const data = await res.json();
   
   return {
@@ -21,6 +20,8 @@ export async function getServerSideProps() {
 }
 
 function Dashboard({ data }) {
+  //const res = fetch('http://localhost:8090/api/users/PES2UG19CS197')
+  //const data = res.json();
   return (
     <>
       <Head>

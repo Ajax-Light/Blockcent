@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ModeOutlined } from '@mui/icons-material';
+import Dashboard from './dashboard';
 
 export async function getServerSideProps() {
   const res = await fetch('http://localhost:8090/api/users')
@@ -23,13 +24,19 @@ const Login = ({ data }) => {
   const formik = useFormik({
     initialValues: {
       id: 'PES2UGXXXXXXX',
+      password: 'password'
     },
     validationSchema: Yup.object({
       id: Yup
         .string()
         .max(255)
         .required(
-          'SRN is required')
+          'SRN is required'),
+      password: Yup
+        .string()
+        .max(255)
+        .required(
+          'Password is required')
     }),
     onSubmit: (id) => {
       const auth = false;
@@ -63,17 +70,6 @@ const Login = ({ data }) => {
         }}
       >
         <Container maxWidth="sm">
-          <NextLink
-            href="/"
-            passHref
-          >
-            <Button
-              component="a"
-              startIcon={<ArrowBackIcon fontSize="small" />}
-            >
-              Dashboard
-            </Button>
-          </NextLink>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography
@@ -115,6 +111,19 @@ const Login = ({ data }) => {
               onChange={formik.handleChange}
               type="text"
               value={formik.values.id}
+              variant="outlined"
+            />
+            <TextField
+              error={Boolean(formik.touched.password && formik.errors.password)}
+              fullWidth
+              helperText={formik.touched.password && formik.errors.password}
+              label="Password"
+              margin="normal"
+              name="password"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="password"
+              value={formik.values.password}
               variant="outlined"
             />
             <Box sx={{ py: 2 }}>
