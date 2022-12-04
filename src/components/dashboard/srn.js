@@ -24,7 +24,7 @@ export function SRN(props) {
             </Typography>
             <Typography
               color="textPrimary"
-              variant="h4"
+              variant="h5"
             >
               {props.data.ID}
             </Typography>
