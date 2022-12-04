@@ -11,6 +11,7 @@ import { getCookie } from 'cookies-next';
 
 export async function getServerSideProps({req, resp}) {
   const userid = getCookie('userid', {req, resp});
+  const numUsers = getCookie('numUsers', {req, resp});
   if(userid === undefined) {
     console.error(`\n-> userid Cookie is undefined`);
   }
@@ -21,6 +22,7 @@ export async function getServerSideProps({req, resp}) {
   res = await fetch(`http://localhost:8090/api/users/history/${userid}`);
   const histData = await res.json();
   data.histData = histData;
+  data.numUsers = numUsers;
 
   return {
     props: {
@@ -67,7 +69,7 @@ function Dashboard({ data }) {
               sm={6}
               xs={12}
             >
-              <TotalCustomers />
+              <TotalCustomers data={data} />
             </Grid>
             <Grid
               item

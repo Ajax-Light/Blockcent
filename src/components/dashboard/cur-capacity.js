@@ -3,7 +3,7 @@ import InsertChartIcon from '@mui/icons-material/InsertChartOutlined';
 
 export function CurrentCapacity(props) {
   const userPoints = props.data.Points;
-  const cap = Number((Number(userPoints)/10000) * 100);
+  const cap = Number((Number(userPoints)/10000) * 100).toFixed(2);
   return (
     <Card
       sx={{ height: '100%' }}

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 
 export async function getServerSideProps() {
-  const res = await fetch('http://localhost:8090/api/users')
+  const res = await fetch('http://localhost:8090/api/users');
   const data = await res.json();
   
   return {
@@ -41,6 +41,7 @@ const Login = ({ data }) => {
         if(data[i].ID === schema.id){
           auth = true;
           fetch(`http://localhost:3000/api/cookie?userid=${data[i].ID}`);
+          fetch(`http://localhost:3000/api/cookie?numUsers=${data.length}`);
           break;
         }
       }
