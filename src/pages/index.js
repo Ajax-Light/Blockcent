@@ -40,8 +40,7 @@ const Login = ({ data }) => {
       for(let i = 0; i < data.length; ++i){
         if(data[i].ID === schema.id){
           auth = true;
-          fetch(`http://localhost:3000/api/cookie?userid=${data[i].ID}`);
-          fetch(`http://localhost:3000/api/cookie?numUsers=${data.length}`);
+          fetch(`http://localhost:3000/api/cookie?userid=${data[i].ID}&numUsers=${data.length}`);
           break;
         }
       }
