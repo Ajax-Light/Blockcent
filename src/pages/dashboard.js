@@ -7,9 +7,15 @@ import { CurrentCapacity } from '../components/dashboard/cur-capacity';
 import { TotalCustomers } from '../components/dashboard/total-customers';
 import { TotalPoints } from '../components/dashboard/total-points';
 import { DashboardLayout } from '../components/dashboard-layout';
+import { getCookie } from 'cookies-next';
 
-export async function getServerSideProps() {
-  const res = await fetch('http://localhost:8090/api/users/PES2UG19CS197')
+export async function getServerSideProps({req, resp}) {
+  const userid = getCookie('userid', {req, resp});
+  if(userid === undefined) {
+    console.error(`\n-> userid Cookie is undefined`);
+  }
+
+  const res = await fetch(`http://localhost:8090/api/users/${userid}`)
   const data = await res.json();
   
   return {

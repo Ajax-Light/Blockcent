@@ -4,9 +4,7 @@ import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { ModeOutlined } from '@mui/icons-material';
-import Dashboard from './dashboard';
+import { setCookie } from 'cookies-next';
 
 export async function getServerSideProps() {
   const res = await fetch('http://localhost:8090/api/users')
@@ -38,11 +36,12 @@ const Login = ({ data }) => {
         .required(
           'Password is required')
     }),
-    onSubmit: (id) => {
+    onSubmit: (schema) => {
       const auth = false;
       for(let i = 0; i < data.length; ++i){
-        if(data[i].ID === id.id){
+        if(data[i].ID === schema.id){
           auth = true;
+          fetch(`http://localhost:3000/api/cookie?userid=${data[i].ID}`);
           break;
         }
       }
