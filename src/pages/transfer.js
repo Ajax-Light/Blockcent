@@ -29,6 +29,7 @@ export async function getServerSideProps({req, resp}) {
 
 const Transfer = ({ data, allUsers }) => {
   const [open, setOpen] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const router = useRouter();
   const formik = useFormik({
@@ -59,7 +60,8 @@ const Transfer = ({ data, allUsers }) => {
       };
       exists = (schema.points > 0 && schema.points <= data.Points && schema.from != schema.to) ? true: false;
       if(!exists){
-        alert("Illegal");
+        setError(true);
+        setOpen(true);
       } else {
         fetch(`http://localhost:8090/api/users/transfer/${schema.from}-${schema.to}-${schema.points}`, {
           method: 'PUT'
@@ -82,13 +84,11 @@ const Transfer = ({ data, allUsers }) => {
     }
 
     setOpen(false);
+    setError(false);
   };
 
   const action = (
     <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
-      </Button>
       <IconButton
         size="small"
         aria-label="close"
@@ -214,9 +214,14 @@ const Transfer = ({ data, allUsers }) => {
         onClose={handleClose}
         action={action}
       >
+        {error === false ? 
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           Transfer of {formik.values.points} points from {formik.values.from} to {formik.values.to} successful!
+        </Alert> :
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+          Transfer of {formik.values.points} points from {formik.values.from} to {formik.values.to} Illegal!
         </Alert>
+        }
       </Snackbar>
       </Box>
     </>
