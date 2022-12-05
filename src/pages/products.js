@@ -4,8 +4,26 @@ import { products } from '../__mocks__/products';
 import { ProductListToolbar } from '../components/product/product-list-toolbar';
 import { ProductCard } from '../components/product/product-card';
 import { DashboardLayout } from '../components/dashboard-layout';
+import { getCookie } from 'cookies-next';
 
-const Products = () => (
+export async function getServerSideProps({req, resp}) {
+  const userid = getCookie('userid', {req, resp});
+  if(userid === undefined) {
+    console.error(`\n-> userid Cookie is undefined`);
+  }
+
+  let res = await fetch(`http://localhost:8090/api/users/${userid}`);
+  let data = await res.json();
+
+  return {
+    props: {
+      data
+    }
+  };
+}
+
+
+const Products = ({ data }) => (
   <>
     <Head>
       <title>
@@ -34,7 +52,7 @@ const Products = () => (
                 md={6}
                 xs={12}
               >
-                <ProductCard product={product} />
+                <ProductCard product={product} data={data} />
               </Grid>
             ))}
           </Grid>
