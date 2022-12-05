@@ -15,56 +15,65 @@ import {
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const products = [
-  {
-    id: uuid(),
-    name: 'Tea/Coffee',
-    imageUrl: '/static/images/products/coffee.png',
-    updatedAt: subHours(Date.now(), 2)
-  },
-  {
-    id: uuid(),
-    name: 'Sandwich',
-    imageUrl: '/static/images/products/sandwich.png',
-    updatedAt: subHours(Date.now(), 2)
-  },
-  {
-    id: uuid(),
-    name: 'Burger',
-    imageUrl: '/static/images/products/burger.png',
-    updatedAt: subHours(Date.now(), 3)
-  },
-  {
-    id: uuid(),
-    name: 'Letter of Recommendation',
-    imageUrl: '/static/images/products/lor.png',
-    updatedAt: subHours(Date.now(), 5)
-  },
-  {
-    id: uuid(),
-    name: 'Internship',
-    imageUrl: '/static/images/products/internship.png',
-    updatedAt: subHours(Date.now(), 9)
-  }
-];
+const m = new Map();
+m.set('tea', {
+  id: uuid(),
+  name: 'Tea',
+  imageUrl: '/static/images/products/coffee.png',
+  updatedAt: subHours(Date.now(), 2)
+});
+m.set('coffee', {
+  id: uuid(),
+  name: 'Coffee',
+  imageUrl: '/static/images/products/coffee.png',
+  updatedAt: subHours(Date.now(), 2)
+});
+m.set('sandwich', {
+  id: uuid(),
+  name: 'Sandwich',
+  imageUrl: '/static/images/products/sandwich.png',
+  updatedAt: subHours(Date.now(), 2)
+});
+m.set('burger', {
+  id: uuid(),
+  name: 'Burger',
+  imageUrl: '/static/images/products/burger.png',
+  updatedAt: subHours(Date.now(), 3)
+});
+m.set('recommendLetter', {
+  id: uuid(),
+  name: 'Letter of Recommendation',
+  imageUrl: '/static/images/products/lor.png',
+  updatedAt: subHours(Date.now(), 5)
+});
+m.set('internship', {
+  id: uuid(),
+  name: 'Internship',
+  imageUrl: '/static/images/products/internship.png',
+  updatedAt: subHours(Date.now(), 9)
+});
 
-export const LatestProducts = (props) => (
+
+export const LatestProducts = ({data}, props) => (
   <Card {...props}>
     <CardHeader
-      subtitle={`${products.length} in total`}
+      subtitle={`${Object.values(data.Owns).length} in total`}
       title="Latest Products"
     />
     <Divider />
     <List>
-      {products.map((product, i) => (
+      {Object.entries(data.Owns).map((product, i) => (
+        <>
+        {
+          m.has(product[0]) && product[1] > 0 &&
         <ListItem
-          divider={i < products.length - 1}
-          key={product.id}
+          divider={i < Object.values(data.Owns).length - 1}
+          key={i}
         >
           <ListItemAvatar>
             <img
-              alt={product.name}
-              src={product.imageUrl}
+              alt={m.has(product[0]) ? m.get(product[0]).name : ""}
+              src={m.has(product[0]) ? m.get(product[0]).imageUrl : ""}
               style={{
                 height: 48,
                 width: 48
@@ -72,8 +81,8 @@ export const LatestProducts = (props) => (
             />
           </ListItemAvatar>
           <ListItemText
-            primary={product.name}
-            secondary={`Updated ${formatDistanceToNow(product.updatedAt)}`}
+            primary={m.has(product[0]) ? m.get(product[0]).name : ""}
+            secondary={`Quantity: ${product[1]}`}
           />
           <IconButton
             edge="end"
@@ -82,6 +91,8 @@ export const LatestProducts = (props) => (
             <MoreVertIcon />
           </IconButton>
         </ListItem>
+      }
+      </>
       ))}
     </List>
     <Divider />

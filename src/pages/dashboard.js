@@ -96,7 +96,7 @@ function Dashboard({ data }) {
               xs={12}
             >
 
-              <LatestProducts sx={{ height: '100%' }} />
+              <LatestProducts sx={{ height: '100%' }} data={data} />
             </Grid>
             <Grid
               item
