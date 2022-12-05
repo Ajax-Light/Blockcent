@@ -19,6 +19,10 @@ exports.create = async function(obj) {
     return await conn.createAsset(obj);
 }
 
+exports.update = async function(obj) {
+    return await conn.updateAsset(obj);
+}
+
 exports.transfer = async function(from, to, points){
     return await conn.transferAssetAsync(from, to, points);
 }

@@ -228,6 +228,29 @@ class Gateway {
         return result;
     }
 
+    async updateAsset(obj) {
+        console.log(`\n--> Updating Asset ${obj.id}`);
+
+        try {
+            await this.contract.submitTransaction(
+                'UpdateAsset',
+                obj.id,
+                obj.type,
+                obj.name,
+                JSON.stringify(obj.owns),
+                String(obj.points)
+            );
+        } catch (error) {
+            console.error('*** Asset Update Error. Params:\n');
+            console.error(`${obj.id}, ${obj.type}, ${obj.name}, ${JSON.stringify(obj.owns)}, ${obj.points}`);
+            console.error('*** Asset may already exist\n');
+            return false;
+        }
+        
+        console.log('*** Transaction committed successfully');
+        return true;
+    }
+
     /**
      * submitTransaction() will throw an error containing details of any error responses from the smart contract.
      */
