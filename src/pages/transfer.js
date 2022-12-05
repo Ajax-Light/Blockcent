@@ -52,33 +52,23 @@ const Transfer = ({ data, allUsers }) => {
           exists = true;
           break;
         }
-      }
-      exists = (schema.points <= data.Points && schema.from != schema.to) ? true: false;
+      };
+      exists = (schema.points > 0 && schema.points <= data.Points && schema.from != schema.to) ? true: false;
       if(!exists){
-        window.location.reload(false);
         alert("Illegal");
       } else {
-        const transaction = {
-          from: schema.from,
-          to: schema.to,
-          points: schema.points
-        }
-        fetch('http://localhost:8090/api/transfer', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(transaction)
+        fetch(`http://localhost:8090/api/users/transfer/${schema.from}-${schema.to}-${schema.points}`, {
+          method: 'PUT'
         })
-        .then((response) => response.json())
+        .then((response) => {response.json()})
         .then((transaction) => {
           console.log('Posting Data Success:', transaction);
         })
         .catch((error) => {
           console.error('Posting Data Error:', error);
         });
-        router.push('/transfer');
       }
+      window.location.reload(false);
     }
   });
 
