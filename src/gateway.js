@@ -155,11 +155,11 @@ class Gateway {
                 obj.type,
                 obj.name,
                 JSON.stringify(obj.owns),
-                obj.points
+                String(obj.points)
             );
         } catch (error) {
             console.error('*** Asset Creation Error. Params:\n');
-            console.error(`${obj.id}, ${obj.type}, ${obj.name}, ${obj.owns}, ${obj.points}`);
+            console.error(`${obj.id}, ${obj.type}, ${obj.name}, ${JSON.stringify(obj.owns)}, ${obj.points}`);
             console.error('*** Asset may already exist\n');
             return false;
         }

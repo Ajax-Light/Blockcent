@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { Box, Container, Grid } from '@mui/material';
+import { NotFound } from '../pages/404';
 import { SRN } from '../components/dashboard/srn';
 import { LatestOrders } from '../components/dashboard/latest-orders';
 import { LatestProducts } from '../components/dashboard/latest-products';
@@ -32,8 +33,7 @@ export async function getServerSideProps({req, resp}) {
 }
 
 function Dashboard({ data }) {
-  //const res = fetch('http://localhost:8090/api/users/PES2UG19CS197')
-  //const data = res.json();
+
   return (
     <>
       <Head>
