@@ -43,6 +43,12 @@ const Register = () => {
         .max(255)
         .required(
           'Last name is required'),
+      srn : Yup
+        .string()
+        .max(255)
+        .required(
+          'SRN is required'
+        ),
       password: Yup
         .string()
         .max(255)
@@ -55,7 +61,30 @@ const Register = () => {
           'This field must be checked'
         )
     }),
-    onSubmit: () => {
+    onSubmit: (schema) => {
+      const data = {
+        id: schema.srn,
+        name: schema.firstName+schema.lastName,
+        points: 100,
+        type: 'Student',
+        owns: {
+          sandwich: 1
+        }
+      }
+      fetch('http://localhost:8090/api/users/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Posting Data Success:', data);
+      })
+      .catch((error) => {
+        console.error('Posting Data Error:', error);
+      });
       router.push('/');
     }
   });
@@ -126,6 +155,18 @@ const Register = () => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               value={formik.values.lastName}
+              variant="outlined"
+            />
+            <TextField
+              error={Boolean(formik.touched.srn && formik.errors.srn)}
+              fullWidth
+              helperText={formik.touched.srn && formik.errors.srn}
+              label="SRN"
+              margin="normal"
+              name="srn"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.srn}
               variant="outlined"
             />
             <TextField
