@@ -1,10 +1,12 @@
-import Head from 'next/head';
+import * as React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close'
+import { Box, Button, Container, TextField, Typography, Snackbar, Alert, IconButton } from '@mui/material';
 import { getCookie } from 'cookies-next';
 
 export async function getServerSideProps({req, resp}) {
@@ -26,6 +28,8 @@ export async function getServerSideProps({req, resp}) {
 }
 
 const Transfer = ({ data, allUsers }) => {
+  const [open, setOpen] = React.useState(false);
+
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -67,10 +71,34 @@ const Transfer = ({ data, allUsers }) => {
         .catch((error) => {
           console.error('Posting Data Error:', error);
         });
+        setOpen(true);
       }
-      window.location.reload(false);
     }
   });
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <>
@@ -180,6 +208,16 @@ const Transfer = ({ data, allUsers }) => {
             </Box>
           </form>
         </Container>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        action={action}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Transfer of {formik.values.points} points from {formik.values.from} to {formik.values.to} successful!
+        </Alert>
+      </Snackbar>
       </Box>
     </>
   );
