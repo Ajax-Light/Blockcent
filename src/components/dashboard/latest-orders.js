@@ -1,5 +1,3 @@
-import { format } from 'date-fns';
-import { v4 as uuid } from 'uuid';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
@@ -16,7 +14,6 @@ import {
 } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from '../severity-pill';
-
 
 export const LatestOrders = (props) => (
   <Card {...props}>

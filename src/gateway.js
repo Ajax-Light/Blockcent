@@ -219,7 +219,7 @@ class Gateway {
             resultBytes = await this.contract.evaluateTransaction('GetTransactions', userId);
         } catch (error){
             console.error(`*** User ${userId} does not exist`);
-            return null;
+            return JSON.parse("[]");
         }
 
         const resultJson = this.utf8Decoder.decode(resultBytes);

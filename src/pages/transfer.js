@@ -4,13 +4,32 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import { getCookie } from 'cookies-next';
 
-const Transfer = ({ data }) => {
+export async function getServerSideProps({req, resp}) {
+  const userid = getCookie('userid', {req, resp});
+  if(userid === undefined) {
+    console.error(`\n-> userid Cookie is undefined`);
+  }
+
+  let res = await fetch(`http://localhost:8090/api/users/${userid}`);
+  const res2 = await fetch('http://localhost:8090/api/users');
+  let data = await res.json();
+  const allUsers = await res2.json();
+
+  return {
+    props: {
+      data, allUsers
+    }
+  };
+}
+
+const Transfer = ({ data, allUsers }) => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      from: 'PES2UGXXXXXXX',
+      from: data.ID,
       to: 'PES2UGXXXXXXX',
       points: 0
     },
@@ -26,9 +45,40 @@ const Transfer = ({ data }) => {
         .required(
           'Enter Recipient ID')
     }),
-    /* Add logic to check transaction possible below */
-    onSubmit: (to, points) => {
-        
+    onSubmit: (schema) => {
+      const exists = false;
+      for(let i = 0; i < allUsers.length; ++i){
+        if(allUsers[i].ID === schema.to){
+          exists = true;
+          break;
+        }
+      }
+      exists = (schema.points <= data.Points && schema.from != schema.to) ? true: false;
+      if(!exists){
+        window.location.reload(false);
+        alert("Illegal");
+      } else {
+        const transaction = {
+          from: schema.from,
+          to: schema.to,
+          points: schema.points
+        }
+        fetch('http://localhost:8090/api/transfer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(transaction)
+        })
+        .then((response) => response.json())
+        .then((transaction) => {
+          console.log('Posting Data Success:', transaction);
+        })
+        .catch((error) => {
+          console.error('Posting Data Error:', error);
+        });
+        router.push('/transfer');
+      }
     }
   });
 

@@ -20,6 +20,7 @@ export async function getServerSideProps({req, resp}) {
   let data = await res.json();
   
   res = await fetch(`http://localhost:8090/api/users/history/${userid}`);
+  
   const histData = await res.json();
   data.histData = histData;
   data.numUsers = numUsers;
@@ -32,7 +33,6 @@ export async function getServerSideProps({req, resp}) {
 }
 
 function Dashboard({ data }) {
-
   return (
     <>
       <Head>
