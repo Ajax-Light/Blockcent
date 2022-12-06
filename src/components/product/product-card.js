@@ -1,34 +1,32 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import { Avatar, Box, Card, CardContent, Divider, Grid, Typography, Button, Snackbar, Alert, IconButton } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Divider, Grid, Typography, Button } from '@mui/material';
 import { Point as PointIcon} from '../../icons/point';
-import CloseIcon from '@mui/icons-material/Close'
+import { m as productNameMap } from '../dashboard/latest-products';
 
-const handleClose = (event, reason) => {
-  if (reason === 'clickaway') {
-    return;
+// Accept Owns JSON, return updated Owns JSON
+function buyProduct(owns, product) {
+  // First check if product is already owned
+  const owns_array = Object.entries(owns);
+  for(var i = 0; i < owns_array.length; i++) {
+    if(product.title.toLowerCase().match(owns_array[i][0])) {
+      owns[owns_array[i][0]] = Number(owns_array[i][1]) + 1;
+      alert('match found!!');
+      return owns;
+    }
   }
-
-  setOpen(false);
-  setError(false);
-};
-
-const action = (
-  <React.Fragment>
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleClose}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  </React.Fragment>
-);
+  // Product not found, add it
+  for(const [k,v] of productNameMap) {
+    if(v.name == product.name) {
+      owns.k = 1;
+      alert('match not found, adding');
+      return owns;
+    }
+  }
+  return owns;
+}
 
 export const ProductCard = ({ product, data, ...rest }) => {
-  const [open, setOpen] = React.useState(false);
-  const [error, setError] = React.useState(false);
 
   return (
     <>
@@ -89,22 +87,21 @@ export const ProductCard = ({ product, data, ...rest }) => {
                 color="secondary"
                 variant="contained"
                 onClick={() => {
-                  if(product.worth <= data.Points){
-                    const buy = {
+                  if(Number(product.worth) <= Number(data.Points)){
+                    data.Owns = buyProduct(data.Owns, product);
+                    const buy_payload = {
                       id: data.ID,
                       name: data.Name,
-                      points: product.worth,
+                      points: (Number(data.Points) - Number(product.worth)).toString(),
                       type: 'Student',
-                      owns: {
-                        product : 1
-                      }
+                      owns: data.Owns
                     }
                     fetch('http://localhost:8090/api/users/update', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json'
                       },
-                      body: JSON.stringify(buy)
+                      body: JSON.stringify(buy_payload)
                     })
                     .then((response) => response.json())
                     .then((buy) => {
@@ -113,26 +110,10 @@ export const ProductCard = ({ product, data, ...rest }) => {
                     .catch((error) => {
                       console.error('Posting Data Error:', error);
                     });
-                    setOpen(true);
+                    alert("Buy Success");
                   } else {
-                    setError(true);
-                    setOpen(true);
+                    alert("Illegal Buy");
                   }
-                  <Snackbar
-                    open={open}
-                    autoHideDuration={6000}
-                    onClose={handleClose}
-                    action={action}
-                  >
-                    {error === false ? 
-                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                      Item purchased for {product.worth} points successfully!
-                    </Alert> :
-                    <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                      Item purchase failed!
-                    </Alert>
-                    }
-                  </Snackbar>
                 }}
               >
                 <PointIcon color="primary" />
@@ -145,7 +126,6 @@ export const ProductCard = ({ product, data, ...rest }) => {
                   {product.worth}
                   {' '}
                   Points
-                  {data.Points}
                 </Typography>
               </Button>
             </Grid>

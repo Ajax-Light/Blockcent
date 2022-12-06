@@ -15,7 +15,7 @@ import {
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const m = new Map();
+export const m = new Map();
 m.set('tea', {
   id: uuid(),
   name: 'Tea',
